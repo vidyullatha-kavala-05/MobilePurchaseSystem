@@ -1,0 +1,286 @@
+package MobilePurchaseSystem.Mobile.dao;
+
+import java.util.List;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import MobilePurchaseSystem.Mobile.entity.*;
+import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+
+
+public class MobileSalesDao {
+	CustomerDetails customer=new CustomerDetails();
+	Scanner sc=new Scanner(System.in);
+	
+	public void insertmobile()
+	{
+		//create an EntityManagerFactory
+		EntityManagerFactory ef=Persistence.createEntityManagerFactory("pu");
+		
+		//create an EntityManager
+		EntityManager em=ef.createEntityManager();
+		
+		//object of Mobile class
+		Mobiles mobile=new Mobiles();
+		
+		//begin a new transaction
+		em.getTransaction().begin();
+		
+		int mobileId;
+		String mobileName;
+		int price;
+		int quantity;
+		sc.nextLine();
+		
+		System.out.println("Enter name of mobile:");
+		mobileName=sc.nextLine();
+		
+		System.out.println("Enter quantity:");
+		quantity=sc.nextInt();
+		
+		System.out.println("Enter mobile id:");
+		mobileId=sc.nextInt();
+		
+		System.out.println("Enter price:");
+		price=sc.nextInt();
+		
+		//setting data into table
+		mobile.setMobileId(mobileId);
+		mobile.setMobileName(mobileName);
+		mobile.setPrice(price);
+		mobile.setQuantity(quantity);
+		
+		em.persist(mobile);
+		
+		//commit the transaction
+		em.getTransaction().commit();
+		System.out.println("record inserted successfully "+mobile);
+		
+		//close entityManager and entityManagerFactory
+		ef.close();
+		em.close();
+		
+	}
+	
+	//method to insert data in customerDetails table
+		public void insertpurchasedetails()
+		{
+			//create an EntityManagerFactory
+			EntityManagerFactory emf=Persistence.createEntityManagerFactory("pu");
+			
+			//create an EntityManager
+			EntityManager em=emf.createEntityManager();
+			//begin a new transaction
+			em.getTransaction().begin();
+			
+			String customerName;
+			String mailId;
+			String phoneNo;
+			int mobileId;
+			
+			System.out.println("Enter name of cname:");
+			customerName=sc.nextLine();
+			
+			//validating name
+			Pattern pattern=Pattern.compile("^[A-Z][a-z]{0,19}$");
+			Matcher matchern=pattern.matcher(customerName);
+			//if name is correct the take email else return
+			if(matchern.matches())
+			{
+				System.out.println("Enter mailId:");
+				mailId=sc.nextLine();
+				
+				//validating mail
+				Pattern patternm=Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
+				Matcher matcherm=patternm.matcher(mailId);
+				//if mail is correct the take email else return
+				if(matcherm.matches())
+				{
+					System.out.println("Enter phone number:");
+					phoneNo=sc.nextLine();
+					
+					//validating mail
+					Pattern patternp=Pattern.compile("^[0-9]{10}$");
+					Matcher matcherp=patternp.matcher(phoneNo);
+					//if phoneNo is correct the take email else return
+					if(matcherp.matches())
+					{
+						System.out.println("Enter mobile id:");
+						mobileId=sc.nextInt();
+						
+						//object of mobile class
+						Mobiles mobile=em.find(Mobiles.class, mobileId);
+						
+						//if quantity>0 then allow purchasing
+						if(mobile!=null&&mobile.getQuantity()>0)
+						{
+							customer.setCustomerName(customerName);
+							customer.setMailId(mailId);
+							customer.setPhoneNo(phoneNo);
+							customer.setMobiles(mobile);
+							
+							em.persist(customer);
+						}
+						else
+						{
+							System.out.println("Mobile quantity is not sufficent");
+						}
+					}
+					else
+					{
+						System.out.println("Details are invalid");
+						return;
+					}
+				}
+				else
+				{
+					System.out.println("Details are invalid");
+					return;
+				}	
+			}
+			else
+			{
+				System.out.println("Details are invalid");
+				return;
+			}
+			//commit the transaction
+			em.getTransaction().commit();
+			System.out.println("record inserted successfully "+customer);
+			//close entityManager and entityManagerFactory
+			emf.close();
+			em.close();
+			
+		}
+	
+		public void delete(int id)
+		{
+			//create an EntityManagerFactory
+			 EntityManagerFactory emf=Persistence.createEntityManagerFactory("pu");
+			 
+			//create an EntityManager
+			 EntityManager em=emf.createEntityManager();
+			 Mobiles mobiledelete=new Mobiles();
+			 
+			//begin a new transaction
+			 em.getTransaction().begin(); 
+			 //finding record based on id
+			 mobiledelete=em.find(Mobiles.class,id);
+			 
+			 if(mobiledelete!=null)
+			 {
+				 //removing record based on id if not null
+				 em.remove(mobiledelete);
+				 System.out.println("Record deleted succesfully");
+			 }
+			 else
+			 {
+				 System.out.println("Mobile of this id are not available");
+			 }
+			//commit the transaction
+			 em.getTransaction().commit();
+			 
+			//close entityManager and entityManagerFactory
+			 em.close();
+			 emf.close();
+		}
+	
+		//method to update data in mobile table
+		public void update(int id)
+		{
+			//create an EntityManagerFactory
+			 EntityManagerFactory emf=Persistence.createEntityManagerFactory("pu");
+			 
+			//create an EntityManager
+			 EntityManager em=emf.createEntityManager();
+			 
+			//begin a new transaction
+			 em.getTransaction().begin(); 
+			//finding record based on id
+			 Mobiles mob1=em.find(Mobiles.class,id);
+			//updating record based on id if not null and quantity>0
+			 if(mob1!=null&&mob1.getQuantity()>0)
+			 {
+			 System.out.println("enter quantity of mobile to update the record:"); 
+			 int z=mob1.getQuantity()-1;
+			 mob1.setQuantity(z);
+			 }
+			 else
+			 {
+				 System.out.println("mobile of this id are not available");
+			 }
+			//commit the transaction
+			 em.getTransaction().commit();
+			//close entityManager and entityManagerFactory
+			 em.close();
+			 emf.close();
+		}
+		
+		//method to search mobile details using price range
+		public void search()
+		{
+			//create an EntityManagerFactory
+			EntityManagerFactory emf=Persistence.createEntityManagerFactory("pu");
+			
+			//create an EntityManager
+			EntityManager em=emf.createEntityManager();
+			
+			//begin a new transaction
+			em.getTransaction().begin();
+			System.out.println("enter min price:");
+			int min_price=sc.nextInt();
+			System.out.println("enter max price:");
+			int max_price=sc.nextInt();
+			//query for range of price
+			TypedQuery<Mobiles> query=em.createQuery("select mob from Mobiles mob where mob.price between :min_price and :max_price",Mobiles.class);
+			query.setParameter("max_price",max_price );
+			query.setParameter("min_price",min_price );
+			//list storing all mobile in given range
+			List<Mobiles> mobileinprice=query.getResultList();
+			if(mobileinprice.isEmpty())
+			{
+				 System.out.println("mobile of this price range are not available");
+			}
+			else
+			{
+				System.out.println("mobile of this price range are:");
+				//printing list
+				for(Mobiles mobile:mobileinprice)
+				{
+					System.out.println("mobileId: "+mobile.getMobileId()+" mobileName: "+mobile.getMobileName()+" price: "+mobile.getPrice());
+				}
+			}
+			//commit the transaction
+			em.getTransaction().commit();
+			//close entityManager and entityManagerFactory
+			emf.close();
+			em.close();
+		}
+		
+		
+		//method to view mobile data
+		public List<Mobiles> display()
+		{
+			//create an EntityManagerFactory
+			EntityManagerFactory emf=Persistence.createEntityManagerFactory("pu");
+			
+			//create an EntityManager
+			EntityManager em=emf.createEntityManager();
+			
+			//begin a new transaction
+			em.getTransaction().begin();
+			Query query=em.createNamedQuery("view");
+			@SuppressWarnings("unchecked")
+			List<Mobiles> list=query.getResultList();
+			//close entityManager and entityManagerFactory
+			emf.close();
+			em.close();
+			return list;
+		}
+		
+
+}
