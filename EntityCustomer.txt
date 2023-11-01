@@ -1,0 +1,149 @@
+package MobilePurchaseSystem.Mobile.entity;
+
+import java.util.Date;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="CustomerDetails")
+
+public class CustomerDetails {
+	@Id
+	private int customerId;
+	
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator ="customerIdSequnce")
+	@SequenceGenerator(name="customerId",sequenceName="customerIdSequence",allocationSize=1)
+	
+	@Column(name="customerName")
+	private String customerName;
+	
+	@Column(name="mailId")
+	private String mailId;
+	
+	@Column(name="phoneNo")
+	private String phoneNo;
+	
+	@Column(name="purchaseDate")
+	private Date puchaseDate = new Date();
+	
+	@ManyToOne
+	@JoinColumn(name="mobileId")
+	private Mobiles mobiles;
+	
+	public CustomerDetails() {
+		
+	}
+
+	public CustomerDetails(int customerId, String customerName, String mailId, String phoneNo, Date puchaseDate,
+			Mobiles mobiles) {
+		super();
+		this.customerId = customerId;
+		this.customerName = customerName;
+		this.mailId = mailId;
+		this.phoneNo = phoneNo;
+		this.puchaseDate = puchaseDate;
+		this.mobiles = mobiles;
+	}
+
+	/**
+	 * @return the customerId
+	 */
+	public int getCustomerId() {
+		return customerId;
+	}
+
+	/**
+	 * @param customerId the customerId to set
+	 */
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
+
+	/**
+	 * @return the customerName
+	 */
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	/**
+	 * @param customerName the customerName to set
+	 */
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	/**
+	 * @return the mailId
+	 */
+	public String getMailId() {
+		return mailId;
+	}
+
+	/**
+	 * @param mailId the mailId to set
+	 */
+	public void setMailId(String mailId) {
+		this.mailId = mailId;
+	}
+
+	/**
+	 * @return the phoneNo
+	 */
+	public String getPhoneNo() {
+		return phoneNo;
+	}
+
+	/**
+	 * @param phoneNo the phoneNo to set
+	 */
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
+	}
+
+	/**
+	 * @return the puchaseDate
+	 */
+	public Date getPuchaseDate() {
+		return puchaseDate;
+	}
+
+	/**
+	 * @param puchaseDate the puchaseDate to set
+	 */
+	public void setPuchaseDate(Date puchaseDate) {
+		this.puchaseDate = puchaseDate;
+	}
+
+	/**
+	 * @return the mobiles
+	 */
+	public Mobiles getMobiles() {
+		return mobiles;
+	}
+
+	/**
+	 * @param mobiles the mobiles to set
+	 */
+	public void setMobiles(Mobiles mobiles) {
+		this.mobiles = mobiles;
+	}
+
+	@Override
+	public String toString() {
+		return "CustomerDetails [customerId=" + customerId + ", customerName=" + customerName + ", mailId=" + mailId
+				+ ", phoneNo=" + phoneNo + ", puchaseDate=" + puchaseDate + ", mobiles=" + mobiles + "]";
+	}
+
+	
+	
+	
+}
