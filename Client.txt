@@ -1,0 +1,64 @@
+package MobilePurchaseSystem.Mobile.client;
+
+import java.util.Scanner;
+
+import MobilePurchaseSystem.Mobile.service.*;
+
+
+public class MobileSalesClient {
+	public static void main(String[] args) 
+	{
+		Scanner sc=new Scanner(System.in);
+		//object of Service implementation class
+		MobileSalesService service=new MobileSalesService();
+		int y;
+		
+		//Taking input from user until he exits
+		do 
+		{
+			System.out.println("1.Insert mobile data");
+			System.out.println("2.Insert purchase details");
+			System.out.println("3.View details of all the mobiles");
+			System.out.println("4.Delete a mobile details based on id");
+			System.out.println("5.Search for any mobile using range of price");
+			System.out.println("Enter your choice:");
+			int x=sc.nextInt();
+			switch(x)
+			{
+			
+			//insert mobile data
+			case 1:	service.insertmobile();
+					break;
+			
+			//insert purchase details
+			case 2:System.out.println("Enter mobile id to purchase"); 
+					int id1=sc.nextInt(); 
+					service.insertpurchasedetails();
+					//update purchase details
+					service.update(id1);
+					break;
+					
+			//view details of all the mobile
+			case 3:	System.out.println(service.display());
+					break;
+					
+			//delete a mobile details based on id
+			case 4:	System.out.println("Enter id to delete the record:"); 
+					int id=sc.nextInt(); 
+					service.delete(id);
+					break;
+					
+			//search for any mobile using range of price
+			case 5: service.search();
+					break;
+			default:System.out.println("Enter valid choice:");
+			}
+			
+			System.out.println("Enter 1 to continue 0 to exit:");
+			y=sc.nextInt();
+			
+		}while(y==1);
+		sc.close();
+	}
+
+}
