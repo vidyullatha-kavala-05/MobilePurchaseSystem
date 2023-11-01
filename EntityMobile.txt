@@ -1,0 +1,125 @@
+package MobilePurchaseSystem.Mobile.entity;
+
+import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.OneToMany;
+
+@Entity
+@Table(name="Mobile")
+
+public class Mobiles {
+	@Id
+	
+	@Column(name="mobleId")
+	private int mobileId;
+	
+	@Column(name="mobleName")
+	private String mobileName;
+	
+	@Column(name="price")
+	private double price;
+	
+	@Column(name="quantity")
+	private int quantity;
+	
+	@OneToMany(mappedBy="mobile")
+	private List<CustomerDetails> customerDetails;
+	
+	public Mobiles() {
+		
+	}
+
+	public Mobiles(int mobileId, String mobileName, double price, int quantity,
+			List<CustomerDetails> customerDetails) {
+		super();
+		this.mobileId = mobileId;
+		this.mobileName = mobileName;
+		this.price = price;
+		this.quantity = quantity;
+		this.customerDetails = customerDetails;
+	}
+
+	/**
+	 * @return the mobileId
+	 */
+	public int getMobileId() {
+		return mobileId;
+	}
+
+	/**
+	 * @param mobileId the mobileId to set
+	 */
+	public void setMobileId(int mobileId) {
+		this.mobileId = mobileId;
+	}
+
+	/**
+	 * @return the mobileName
+	 */
+	public String getMobileName() {
+		return mobileName;
+	}
+
+	/**
+	 * @param mobileName the mobileName to set
+	 */
+	public void setMobileName(String mobileName) {
+		this.mobileName = mobileName;
+	}
+
+	/**
+	 * @return the price
+	 */
+	public double getPrice() {
+		return price;
+	}
+
+	/**
+	 * @param price the price to set
+	 */
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	/**
+	 * @return the quantity
+	 */
+	public int getQuantity() {
+		return quantity;
+	}
+
+	/**
+	 * @param quantity the quantity to set
+	 */
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	/**
+	 * @return the customerDetails
+	 */
+	public List<CustomerDetails> getCustomerDetails() {
+		return customerDetails;
+	}
+
+	/**
+	 * @param customerDetails the customerDetails to set
+	 */
+	public void setCustomerDetails(List<CustomerDetails> customerDetails) {
+		this.customerDetails = customerDetails;
+	}
+
+	@Override
+	public String toString() {
+		return "Mobiles [mobileId=" + mobileId + ", mobileName=" + mobileName + ", price=" + price + ", quantity="
+				+ quantity + ", customerDetails=" + customerDetails + "]";
+	}
+
+	
+	
+	
+}
