@@ -1,0 +1,40 @@
+package MobilePurchaseSystem.Mobile.service;
+
+import java.util.List;
+
+import MobilePurchaseSystem.Mobile.entity.*;
+import MobilePurchaseSystem.Mobile.dao.*;
+
+public class MobileSalesService {
+	MobileSalesDao dao=new MobileSalesDao();
+	
+	
+	public void insertmobile()
+	{
+		dao.insertmobile();
+	}
+	public void insertpurchasedetails()
+	{
+		dao.insertpurchasedetails();
+	}
+	public void delete(int id)
+	{
+		dao.delete(id);
+	}
+	public void update(int id)
+	{
+		dao.update(id);
+	}
+	public void search()
+	{
+		dao.search();
+	}
+	public List<Mobiles> display()
+	{
+		return dao.display();
+	}
+	
+	
+
+}
+
